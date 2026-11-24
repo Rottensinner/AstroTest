@@ -23,3 +23,7 @@ Use Node.js 22.23.4 or later. Run these commands from the project directory.
 - `src/layouts/Base.astro` defines the page shell and loads the local fonts and global styles.
 - `src/components/` contains the reusable Astro components.
 - `src/styles/global.css` defines the display themes and component styles.
+
+## Game prototype
+
+Open `/game` for DEEP SPACE, a turn-based LCD survival game. See [GAME.md](GAME.md) for rules and tests.
