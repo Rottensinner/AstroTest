@@ -1,0 +1,120 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+import Panel from '../components/Panel.astro';
+import { initialState, MAX_TURNS } from '../game/engine';
+const initial = initialState();
+const metrics = [
+  { key: 'energy', label: 'ENERGY' },
+  { key: 'oxygen', label: 'OXYGEN' },
+  { key: 'hull', label: 'HULL' },
+  { key: 'distance', label: 'DISTANCE' },
+] as const;
+---
+<Base>
+  <main class="mx-auto max-w-5xl p-4 md:p-8" id="space-game">
+    <header class="mb-6 flex flex-wrap items-end justify-between gap-4 border-b-4 border-ink pb-5">
+      <div>
+        <p class="font-pixel text-xs">RETRO UI / GAME 001 / SOS</p>
+        <h1 class="retro-logo">DEEP SPACE</h1>
+        <p class="max-w-xl text-sm">Dotrzyj do stacji ratunkowej w ciągu {MAX_TURNS} tur. Nie dopuść, aby energia, tlen lub kadłub spadły do zera.</p>
+      </div>
+      <a href="/" class="font-pixel text-sm underline">← UI LAB</a>
+    </header>
+    <div class="grid gap-5 md:grid-cols-2">
+      <Panel title="01 / Flight computer">
+        <div class="space-view" aria-hidden="true">
+          <svg viewBox="0 0 240 100" shape-rendering="crispEdges" class="w-full">
+            <g fill="currentColor" opacity=".35">
+              {[[12,18],[34,77],[68,12],[96,86],[142,20],[171,75],[205,10],[226,88]].map(([x,y]) => <rect x={x} y={y} width="2" height="2"/>)}
+            </g>
+            <path d="M22 50 H218" stroke="currentColor" stroke-dasharray="2 5" opacity=".45"/>
+            <g id="ship" transform="translate(22 50)" fill="currentColor">
+              <path d="M-10 -4 H0 V-8 H4 V-4 H8 V0 H12 V4 H8 V8 H0 V4 H-10 Z"/>
+              <rect x="-16" y="-2" width="4" height="4"/>
+            </g>
+            <g transform="translate(218 50)" fill="none" stroke="currentColor" stroke-width="3">
+              <path d="M-8 -12 H8 V12 H-8 Z M-14 -5 H-8 M8 5 H14 M0 -12 V-19 M0 12 V19"/>
+            </g>
+          </svg>
+          <div class="flex justify-between font-pixel text-xs"><span>SHIP</span><span>STATION</span></div>
+        </div>
+        {metrics.map(({key,label}) => (
+          <div>
+            <div class="mb-1 flex items-center justify-between gap-2">
+              <label for={'meter-'+key} class="font-pixel text-sm">{label}</label>
+              <span data-value={key} class="font-lcd text-xl">{initial[key]}%</span>
+            </div>
+            <progress id={'meter-'+key} class="retro-progress" max="100" value={initial[key]}>{initial[key]}%</progress>
+          </div>
+        ))}
+      </Panel>
+      <Panel title="02 / Command console">
+        <div class="flex flex-wrap justify-between gap-2 font-pixel text-sm">
+          <span>TURN <span id="turn">00</span> / {MAX_TURNS}</span>
+          <span class="retro-badge" id="game-status" role="status">ONLINE</span>
+        </div>
+        <p class="border-2 border-dotted border-ink p-3 text-sm">Następna tura: <strong id="forecast">SEKTOR SPOKOJNY</strong></p>
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <Button variant="primary" data-action="thrust" class="game-action">THRUST <span>+20 dystans / -12 energii</span></Button>
+          <Button data-action="charge" class="game-action">CHARGE <span>+34 energii</span></Button>
+          <Button data-action="oxygen" class="game-action">OXYGEN <span>+38 tlenu / -6 energii</span></Button>
+          <Button data-action="repair" class="game-action">REPAIR <span>+30 kadłub / -5 energii</span></Button>
+        </div>
+        <p class="text-sm">Każda tura zużywa dodatkowo 3 energii i 7 tlenu. Burze i wycieki występują według prognozy. Zasoby nie przekraczają 100%.</p>
+        <Button id="restart" variant="ghost">RESTART MISSION</Button>
+      </Panel>
+    </div>
+    <div class="mt-5">
+      <Panel title="03 / Event log">
+        <ol id="game-log" class="retro-terminal bg-ink text-lcd p-4 break-words" aria-live="polite" aria-relevant="additions text">
+          {initial.log.map(line => <li>{line}</li>)}
+        </ol>
+      </Panel>
+    </div>
+  </main>
+</Base>
+<style>
+  .space-view { border: 3px solid var(--color-ink); padding: 12px; background: var(--color-surface); }
+  :global(#space-game .game-action) { min-height: 76px; font-size: 14px; }
+  :global(#space-game .game-action span) { display: block; font-family: system-ui, sans-serif; font-size: 11px; font-weight: normal; text-transform: none; margin-top: 6px; }
+  #game-log li + li { border-top: 1px dotted currentColor; margin-top: 8px; padding-top: 8px; }
+  #game-log { min-height: 90px; }
+</style>
+<script>
+  import { initialState, forecast, step, type Action } from '../game/engine';
+  const root = document.querySelector<HTMLElement>('#space-game');
+  if (root) {
+    let state = initialState();
+    const actions = root.querySelectorAll<HTMLButtonElement>('[data-action]');
+    const keys = ['energy', 'oxygen', 'hull', 'distance'] as const;
+    function render() {
+      if (!root) return;
+      for (const key of keys) {
+        const meter = root.querySelector<HTMLProgressElement>('#meter-' + key);
+        if (meter) { meter.value = state[key]; meter.textContent = state[key] + '%'; }
+        const value = root.querySelector('[data-value="' + key + '"]');
+        if (value) value.textContent = state[key] + '%';
+      }
+      const turn = root.querySelector('#turn');
+      if (turn) turn.textContent = String(state.turn).padStart(2, '0');
+      const next = root.querySelector('#forecast');
+      if (next) next.textContent = state.status === 'playing' ? forecast(state.turn + 1) : 'KONIEC MISJI';
+      const status = root.querySelector('#game-status');
+      if (status) status.textContent = state.status === 'won' ? 'MISSION COMPLETE' : state.status === 'lost' ? 'MISSION FAILED' : 'ONLINE';
+      root.querySelector('#ship')?.setAttribute('transform', 'translate(' + (22 + 196 * state.distance / 100) + ' 50)');
+      for (const button of actions) button.disabled = state.status !== 'playing';
+      const log = root.querySelector('#game-log');
+      if (log) log.replaceChildren(...state.log.slice(0, 6).map(line => {
+        const li = document.createElement('li'); li.textContent = line; return li;
+      }));
+    }
+    actions.forEach(button => button.addEventListener('click', () => {
+      const action = button.dataset.action as Action;
+      state = step(state, action); render();
+    }));
+    root.querySelector('#restart')?.addEventListener('click', () => {
+      state = initialState(); render();
+    });
+  }
+</script>
