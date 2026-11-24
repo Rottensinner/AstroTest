@@ -1,0 +1,5 @@
+<retro-clock class="block retro-clock-display" aria-label="Zegar">--:--:--</retro-clock>
+<script>
+class RetroClock extends HTMLElement{timer?:number;connectedCallback(){const tick=()=>{this.textContent=new Date().toLocaleTimeString('pl-PL');};tick();this.timer=window.setInterval(tick,1000);}disconnectedCallback(){window.clearInterval(this.timer);}}
+if(!customElements.get('retro-clock'))customElements.define('retro-clock',RetroClock);
+</script>

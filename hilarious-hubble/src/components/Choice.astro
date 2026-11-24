@@ -1,0 +1,5 @@
+---
+interface Props{label:string;name?:string;value?:string;kind?:'checkbox'|'radio'|'switch';checked?:boolean;disabled?:boolean}
+const {label,name,value,kind='checkbox',checked,disabled}=Astro.props;
+---
+<label class:list={['retro-choice',kind==='switch'&&'retro-switch']}><input type={kind==='radio'?'radio':'checkbox'} role={kind==='switch'?'switch':undefined} {name} {value} {checked} {disabled}/><span>{label}</span></label>

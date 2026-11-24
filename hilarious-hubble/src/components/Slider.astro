@@ -1,0 +1,9 @@
+---
+interface Props{id:string;label:string;min?:number;max?:number;value?:number;step?:number}
+const {id,label,min=0,max=100,value=50,step=1}=Astro.props;
+---
+<retro-slider class="retro-field"><label for={id} class="retro-label">{label}: <output>{value}</output></label><input class="retro-slider" type="range" {id} {min} {max} {value} {step}/></retro-slider>
+<script>
+class RetroSlider extends HTMLElement{connectedCallback(){const input=this.querySelector('input');const output=this.querySelector('output');input?.addEventListener('input',()=>{if(output)output.value=input.value;});}}
+if(!customElements.get('retro-slider'))customElements.define('retro-slider',RetroSlider);
+</script>

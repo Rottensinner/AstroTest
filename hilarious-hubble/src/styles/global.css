@@ -1,0 +1,278 @@
+@import "tailwindcss";
+@theme {
+  --color-lcd: #9ca181;
+  --color-surface: #a8ad8d;
+  --color-ink: #252a14;
+  --color-muted: #555b40;
+  --color-accent: #405e87;
+  --color-danger: #79352e;
+  --color-highlight: #c1c5a5;
+  --font-pixel: "Silkscreen", "Press Start 2P", monospace;
+  --font-arcade: "Press Start 2P", monospace;
+  --font-terminal: "VT323", monospace;
+  --font-lcd: "DSEG14 Classic", monospace;
+  --font-body: system-ui, sans-serif;
+}
+[data-theme="amber"] {
+  --color-lcd: #211a0d;
+  --color-surface: #302511;
+  --color-ink: #ffb000;
+  --color-muted: #d6a34e;
+  --color-accent: #ffd166;
+  --color-danger: #ff8a75;
+  --color-highlight: #503c17;
+}
+[data-theme="blue"] {
+  --color-lcd: #b0c4d0;
+  --color-surface: #c3d4df;
+  --color-ink: #19384c;
+  --color-muted: #40596b;
+  --color-accent: #174f9b;
+  --color-danger: #923b38;
+  --color-highlight: #e0eaf0;
+}
+[data-theme="green"] {
+  --color-lcd: #17271b;
+  --color-surface: #233b29;
+  --color-ink: #a5ed85;
+  --color-muted: #85b975;
+  --color-accent: #e0f9a4;
+  --color-danger: #ff9c85;
+  --color-highlight: #39533b;
+}
+@layer base {
+  body {
+    background: var(--color-lcd);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    margin: 0;
+    min-height: 100vh;
+  }
+  button,
+  select,
+  input,
+  textarea {
+    font: inherit;
+  }
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+  :focus-visible {
+    outline: 3px dashed var(--color-accent);
+    outline-offset: 4px;
+  }
+  :disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-pixel);
+    font-weight: 700;
+  }
+}
+@layer components {
+  .retro-panel {
+    border: 3px solid var(--color-ink);
+    padding: 1rem;
+    box-shadow: inset 2px 2px var(--color-highlight);
+  }
+  .retro-button {
+    font-family: var(--font-pixel);
+    border: 3px solid var(--color-ink);
+    padding: 0.5rem 0.85rem;
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: 3px 3px var(--color-ink);
+  }
+  .retro-button:hover:not(:disabled) {
+    background: var(--color-highlight);
+  }
+  .retro-button:active:not(:disabled) {
+    transform: translate(3px, 3px);
+    box-shadow: none;
+  }
+  .retro-button[data-variant="primary"] {
+    background: var(--color-ink);
+    color: var(--color-lcd);
+  }
+  .retro-button[data-variant="danger"] {
+    color: var(--color-danger);
+  }
+  .retro-button[data-variant="ghost"] {
+    box-shadow: none;
+    background: transparent;
+  }
+  .retro-field {
+    display: grid;
+    gap: 0.35rem;
+    min-width: 0;
+  }
+  .retro-label {
+    font-family: system-ui, sans-serif;
+    font-size: 0.9rem;
+  }
+  .retro-input {
+    font-family: var(--font-pixel);
+    width: 100%;
+    min-width: 0;
+    border: 3px solid var(--color-ink);
+    background: var(--color-surface);
+    padding: 0.55rem 0.7rem;
+    box-shadow: inset 2px 2px
+      color-mix(in srgb, var(--color-ink) 25%, transparent);
+    border-radius: 0;
+  }
+  .retro-input::placeholder {
+    color: var(--color-muted);
+  }
+  .retro-input[aria-invalid="true"] {
+    border-color: var(--color-danger);
+  }
+  .retro-error {
+    color: var(--color-danger);
+    font-size: 0.75rem;
+  }
+  .retro-choice {
+    font-family: var(--font-pixel);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
+  .retro-choice input {
+    appearance: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 3px solid var(--color-ink);
+    display: grid;
+    place-content: center;
+    margin: 0;
+  }
+  .retro-choice input:checked:before {
+    content: "";
+    width: 0.6rem;
+    height: 0.6rem;
+    background: var(--color-ink);
+  }
+  .retro-choice input[type="radio"]:checked:before {
+    border-radius: 50%;
+  }
+  .retro-switch input {
+    width: 2.8rem;
+    justify-content: start;
+    padding: 2px;
+  }
+  .retro-switch input:before {
+    content: "";
+    width: 0.7rem;
+    height: 0.7rem;
+    background: var(--color-muted);
+  }
+  .retro-switch input:checked {
+    justify-content: end;
+  }
+  .retro-slider {
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--color-ink) 0 3px,
+      transparent 3px 7px
+    );
+    margin: 12px 0;
+  }
+  .retro-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: var(--color-ink);
+    border: 2px solid var(--color-ink);
+  }
+  .retro-slider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    background: var(--color-ink);
+    border: 0;
+    border-radius: 0;
+  }
+  .retro-tabs [role="tab"] {
+    font-family: var(--font-pixel);
+    padding: 0.5rem;
+    border-bottom: 4px dotted var(--color-muted);
+  }
+  .retro-tabs [aria-selected="true"] {
+    border-bottom: 4px solid var(--color-ink);
+    font-weight: bold;
+  }
+  .retro-badge {
+    font-family: var(--font-pixel);
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.4rem;
+    font-size: 0.75rem;
+  }
+  .retro-progress {
+    width: 100%;
+    height: 1rem;
+    border: 2px solid var(--color-ink);
+    appearance: none;
+    background: var(--color-surface);
+  }
+  .retro-progress::-webkit-progress-bar {
+    background: var(--color-surface);
+  }
+  .retro-progress::-webkit-progress-value {
+    background: var(--color-ink);
+  }
+  .retro-progress::-moz-progress-bar {
+    background: var(--color-ink);
+  }
+  .retro-dialog {
+    margin: auto;
+    background: var(--color-lcd);
+    color: var(--color-ink);
+    border: 4px solid var(--color-ink);
+    padding: 1.5rem;
+    max-width: min(90vw, 28rem);
+  }
+  .retro-dialog::backdrop {
+    background: #0008;
+  }
+  .retro-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .retro-table th,
+  .retro-table td {
+    border-bottom: 2px dotted var(--color-muted);
+    padding: 0.5rem;
+    text-align: left;
+  }
+}
+
+@layer components {
+  .retro-logo {
+    font-family: var(--font-lcd);
+    font-size: clamp(1.8rem, 7vw, 4rem);
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: normal;
+    margin-block: 0.6rem;
+  }
+  .retro-clock-display {
+    font-family: var(--font-lcd);
+    font-size: clamp(1.25rem, 5vw, 2rem);
+    font-weight: 400;
+    line-height: 1.5;
+    white-space: nowrap;
+  }
+  .retro-terminal {
+    font-family: var(--font-terminal);
+    font-size: 1.375rem;
+    line-height: 1.15;
+  }
+}

@@ -1,0 +1,9 @@
+---
+interface Props{id:string;label:string;min?:number;max?:number;low?:number;high?:number}
+const {id,label,min=0,max=100,low=25,high=75}=Astro.props;
+---
+<retro-range class="retro-field"><fieldset><legend class="retro-label">{label}: <output>{low} – {high}</output></legend><label class="sr-only" for={`${id}-low`}>Minimum</label><input id={`${id}-low`} type="range" class="retro-slider" {min} {max} value={low}/><label class="sr-only" for={`${id}-high`}>Maksimum</label><input id={`${id}-high`} type="range" class="retro-slider" {min} {max} value={high}/></fieldset></retro-range>
+<script>
+class RetroRange extends HTMLElement{connectedCallback(){const [a,b]=this.querySelectorAll('input');const out=this.querySelector('output');if(!a||!b)return;const update=(changed:HTMLInputElement)=>{if(+a.value>+b.value)changed.value=changed===a?b.value:a.value;if(out)out.value=`${a.value} – ${b.value}`;};a.addEventListener('input',()=>update(a));b.addEventListener('input',()=>update(b));}}
+if(!customElements.get('retro-range'))customElements.define('retro-range',RetroRange);
+</script>

@@ -1,0 +1,10 @@
+---
+import Button from './Button.astro';
+interface Props{id:string;title:string;trigger?:string}
+const {id,title,trigger='OPEN'}=Astro.props;
+---
+<retro-dialog><Button data-open>{trigger}</Button><dialog class="retro-dialog" aria-labelledby={`${id}-title`}><h2 id={`${id}-title`} class="text-xl mb-4">{title}</h2><slot/><form method="dialog" class="mt-5"><Button type="submit">CLOSE</Button></form></dialog></retro-dialog>
+<script>
+class RetroDialog extends HTMLElement{connectedCallback(){const dialog=this.querySelector('dialog');this.querySelector('[data-open]')?.addEventListener('click',()=>dialog?.showModal());}}
+if(!customElements.get('retro-dialog'))customElements.define('retro-dialog',RetroDialog);
+</script>

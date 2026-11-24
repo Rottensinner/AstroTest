@@ -1,0 +1,6 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+interface Props extends HTMLAttributes<'textarea'>{id:string;label:string;value?:string}
+const {id,label,value='',class:cls,...rest}=Astro.props;
+---
+<div class="retro-field"><label for={id} class="retro-label">{label}</label><textarea {...rest} id={id} class:list={['retro-input',cls]}>{value}</textarea></div>

@@ -1,0 +1,5 @@
+---
+interface Props{id:string;label:string;options:{value:string;label:string}[];value?:string;name?:string;disabled?:boolean}
+const {id,label,options,value,name=id,disabled}=Astro.props;
+---
+<div class="retro-field"><label for={id} class="retro-label">{label}</label><select id={id} name={name} disabled={disabled} class="retro-input">{options.map(o=><option value={o.value} selected={o.value===value}>{o.label}</option>)}</select></div>

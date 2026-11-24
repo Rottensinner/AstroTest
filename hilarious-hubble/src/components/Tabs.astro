@@ -1,0 +1,9 @@
+---
+interface Props{id:string;tabs:{label:string;content:string}[]}
+const {id,tabs}=Astro.props;
+---
+<retro-tabs class="retro-tabs"><div role="tablist" aria-label="Sekcje" class="flex flex-wrap gap-2">{tabs.map((t,i)=><button type="button" role="tab" id={`${id}-tab-${i}`} aria-controls={`${id}-panel-${i}`} aria-selected={i===0?'true':'false'} tabindex={i===0?0:-1}>{t.label}</button>)}</div>{tabs.map((t,i)=><div role="tabpanel" id={`${id}-panel-${i}`} aria-labelledby={`${id}-tab-${i}`} hidden={i!==0} tabindex="0" class="py-4">{t.content}</div>)}</retro-tabs>
+<script>
+class RetroTabs extends HTMLElement{connectedCallback(){const tabs=Array.from(this.querySelectorAll<HTMLButtonElement>('[role=tab]'));const activate=(index:number)=>{tabs.forEach((tab,i)=>{tab.setAttribute('aria-selected',String(i===index));tab.tabIndex=i===index?0:-1;const panel=document.getElementById(tab.getAttribute('aria-controls')||'');if(panel)panel.hidden=i!==index;});tabs[index]?.focus();};tabs.forEach((tab,i)=>{tab.addEventListener('click',()=>activate(i));tab.addEventListener('keydown',e=>{const next=e.key==='ArrowRight'?(i+1)%tabs.length:e.key==='ArrowLeft'?(i+tabs.length-1)%tabs.length:e.key==='Home'?0:e.key==='End'?tabs.length-1:-1;if(next>=0){e.preventDefault();activate(next);}});});}}
+if(!customElements.get('retro-tabs'))customElements.define('retro-tabs',RetroTabs);
+</script>

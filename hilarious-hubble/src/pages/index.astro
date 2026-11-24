@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+import Input from '../components/Input.astro';
+import Textarea from '../components/Textarea.astro';
+import Select from '../components/Select.astro';
+import Choice from '../components/Choice.astro';
+import Slider from '../components/Slider.astro';
+import RangeSlider from '../components/RangeSlider.astro';
+import Tabs from '../components/Tabs.astro';
+import Panel from '../components/Panel.astro';
+import Dialog from '../components/Dialog.astro';
+import Clock from '../components/Clock.astro';
+---
+<Base><main class="max-w-6xl mx-auto p-5 md:p-10"><header class="border-b-4 border-ink pb-6 mb-8 flex flex-wrap justify-between items-end gap-5"><div><p class="text-xs tracking-widest">SYSTEM / 001 — COMPONENT LIBRARY</p><h1 class="retro-logo">RETRO UI</h1><p>LCD DESIGN SYSTEM / ASTRO + TS + CSS</p></div><div><Select id="theme" label="DISPLAY MODE" options={[{value:'classic',label:'LCD CLASSIC'},{value:'amber',label:'AMBER CRT'},{value:'green',label:'GREEN CRT'},{value:'blue',label:'BLUE LCD'}]}/></div></header>
+<div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+<Panel title="01 / Inputs"><Input id="user" label="Username" placeholder="TYPE HERE"/><Input id="serial" label="Serial number" value="LCD-2048" disabled/><Input id="email" label="Email" type="email" value="invalid" error="INVALID ADDRESS"/><Select id="mode" label="Dropdown" options={[{value:'',label:'CHOOSE ONE'},{value:'1',label:'OPTION ONE'},{value:'2',label:'OPTION TWO'}]}/><Input id="date" label="Date picker" type="date" value="2026-11-24"/></Panel>
+<Panel title="02 / Text & buttons"><Textarea id="message" label="Text area" placeholder="TYPE HERE..." rows={5}/><div class="flex flex-wrap gap-3"><Button variant="primary">START</Button><Button>SETTINGS</Button><Button variant="danger">DELETE</Button><Button variant="ghost">BACK</Button><Button disabled>LOCKED</Button></div><Tabs id="classes" tabs={[{label:'WEB',content:'WEB DESIGN / ONLINE'},{label:'PALADIN',content:'PALADIN / READY'},{label:'WARMAGE',content:'WARMAGE / READY'}]}/></Panel>
+<Panel title="03 / Controls"><fieldset class="flex gap-4 flex-wrap"><legend class="retro-label mb-2">Radio buttons</legend><Choice kind="radio" name="radio" label="A" checked/><Choice kind="radio" name="radio" label="B"/><Choice kind="radio" name="radio" label="C" disabled/></fieldset><fieldset class="flex gap-4 flex-wrap"><legend class="retro-label mb-2">Checkboxes</legend><Choice label="A"/><Choice label="B" disabled/><Choice label="C" checked/></fieldset><Choice kind="switch" label="POWER" checked/><Choice kind="switch" label="SOUND"/><Slider id="volume" label="Volume" value={40}/><RangeSlider id="range" label="Frequency range"/></Panel>
+<Panel title="04 / Status"><Clock/><div class="flex gap-2"><span class="retro-badge">ONLINE</span><span class="retro-badge text-danger">ERROR</span></div><label for="battery">BATTERY / 72%</label><progress id="battery" class="retro-progress" value="72" max="100">72%</progress><div role="status" class="border-2 border-ink p-3">SYSTEM READY.</div><Dialog id="info" title="SYSTEM MESSAGE" trigger="OPEN DIALOG"><p>Connection established.</p></Dialog></Panel>
+<Panel title="05 / Data"><table class="retro-table"><thead><tr><th>DEVICE</th><th>STATUS</th></tr></thead><tbody><tr><td>CPU</td><td>OK</td></tr><tr><td>RAM</td><td>64K</td></tr><tr><td>LINK</td><td>ACTIVE</td></tr></tbody></table><details class="border-2 border-ink p-3"><summary class="cursor-pointer">SYSTEM INFO</summary><p class="mt-3">RetroUI / v0.2.0</p></details></Panel>
+<Panel title="06 / Terminal"><pre class="bg-ink text-lcd p-4 whitespace-pre-wrap retro-terminal">&gt; BOOT LCD_OS
+&gt; CHECK MEMORY ... OK
+&gt; DISPLAY READY
+&gt; _</pre><Button id="toast-button">TEST SIGNAL</Button><p id="toast" role="status" class="min-h-6"></p></Panel>
+<Panel title="07 / Typography"><div class="grid gap-3"><div><p class="retro-label">Silkscreen / UI</p><p class="font-pixel text-2xl">START / Zażółć gęślą jaźń</p></div><div><p class="retro-label">VT323 / Terminal</p><p class="font-terminal text-2xl">&gt; SYSTEM READY 0123456789</p><p class="font-terminal text-xl">Zażółć gęślą jaźń</p></div><div><p class="retro-label">DSEG14 Classic / LCD</p><p class="font-lcd text-xl font-normal leading-loose">LCD 88:88</p></div><div><p class="retro-label">System UI / Readable text</p><p>Zażółć gęślą jaźń.</p></div></div></Panel>
+</div><footer class="mt-8 border-t-2 border-dotted border-ink pt-4 text-xs">RETRO UI / COMPONENT LAB / V0.2.0</footer></main></Base>
+<script>
+const theme=document.querySelector<HTMLSelectElement>('#theme');const allowed=['classic','amber','green','blue'];let saved='classic';try{saved=localStorage.getItem('retro-theme')||'classic';}catch{}if(!allowed.includes(saved))saved='classic';document.documentElement.dataset.theme=saved;if(theme){theme.value=saved;theme.addEventListener('change',()=>{document.documentElement.dataset.theme=theme.value;try{localStorage.setItem('retro-theme',theme.value);}catch{}});}let timer:number;document.querySelector('#toast-button')?.addEventListener('click',()=>{const toast=document.querySelector('#toast');if(toast){toast.textContent='SIGNAL RECEIVED / OK';window.clearTimeout(timer);timer=window.setTimeout(()=>{toast.textContent='';},3000);}});
+</script>
