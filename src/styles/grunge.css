@@ -26,9 +26,9 @@
 .grunge {
   --grunge-wear-opacity: .27;
   --grunge-grain-opacity: .48;
-  --grunge-dust: url("%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22192%22%20height%3D%22192%22%3E%3Cfilter%20id%3D%22n%22%20color-interpolation-filters%3D%22sRGB%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.78%22%20numOctaves%3D%223%22%20seed%3D%2217%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%20.68%200%200%200%200%20.59%200%200%200%200%20.55%205%200%200%200%20-2.55%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url(%23n)%22%2F%3E%3C%2Fsvg%3E");
-  --grunge-ink-loss: url("%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22256%22%20height%3D%22256%22%3E%3Cfilter%20id%3D%22n%22%20color-interpolation-filters%3D%22sRGB%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.51%22%20numOctaves%3D%224%22%20seed%3D%229%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%20.025%200%200%200%200%20.018%200%200%200%200%20.018%205%200%200%200%20-2.35%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url(%23n)%22%2F%3E%3C%2Fsvg%3E");
-  --grunge-wear: url("%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22512%22%20height%3D%22512%22%3E%3Cfilter%20id%3D%22n%22%20color-interpolation-filters%3D%22sRGB%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.035%22%20numOctaves%3D%225%22%20seed%3D%2227%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%20.40%200%200%200%200%20.34%200%200%200%200%20.30%204%200%200%200%20-2.05%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url(%23n)%22%2F%3E%3C%2Fsvg%3E");
+  --grunge-dust: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22192%22%20height%3D%22192%22%3E%3Cfilter%20id%3D%22n%22%20color-interpolation-filters%3D%22sRGB%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.78%22%20numOctaves%3D%223%22%20seed%3D%2217%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%20.68%200%200%200%200%20.59%200%200%200%200%20.55%205%200%200%200%20-2.55%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url(%23n)%22%2F%3E%3C%2Fsvg%3E");
+  --grunge-ink-loss: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22256%22%20height%3D%22256%22%3E%3Cfilter%20id%3D%22n%22%20color-interpolation-filters%3D%22sRGB%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.51%22%20numOctaves%3D%224%22%20seed%3D%229%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%20.025%200%200%200%200%20.018%200%200%200%200%20.018%205%200%200%200%20-2.35%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url(%23n)%22%2F%3E%3C%2Fsvg%3E");
+  --grunge-wear: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22512%22%20height%3D%22512%22%3E%3Cfilter%20id%3D%22n%22%20color-interpolation-filters%3D%22sRGB%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.035%22%20numOctaves%3D%225%22%20seed%3D%2227%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%20.40%200%200%200%200%20.34%200%200%200%200%20.30%204%200%200%200%20-2.05%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url(%23n)%22%2F%3E%3C%2Fsvg%3E");
 }
 
 .grunge::before,
@@ -44,10 +44,8 @@
 .grunge::before {
   z-index: 5;
   background-image:
-    var(--grunge-wear),
-    linear-gradient(73deg, transparent 18%, #aa827438 18.08%, transparent 18.22%),
-    linear-gradient(109deg, transparent 71%, #02010199 71.08%, transparent 71.28%);
-  background-size: 512px 512px, 730px 910px, 890px 1100px;
+    var(--grunge-wear);
+  background-size: 512px 512px;
   opacity: var(--grunge-wear-opacity);
 }
 
@@ -344,4 +342,36 @@
 /* Keep overlays off high-contrast system themes and printed notes. */
 @media (forced-colors: active), print {
   .grunge::before, .grunge::after { display: none; }
+}
+
+/* Physical ink loss: alpha masking of the composed page, not a noise overlay.
+   The opaque main background remains visible through worn-out pixels. */
+.grunge {
+  --grunge-mask-floor: .40;
+  --grunge-mask-size: 256px;
+}
+.grunge.grunge--subtle {
+  --grunge-mask-floor: .78;
+}
+.grunge.grunge--heavy {
+  --grunge-mask-floor: .08;
+  --grunge-mask-size: 290px;
+}
+.grunge .grunge-shell {
+  mask-image: url("/textures/grunge-mask.svg"),
+    linear-gradient(rgb(0 0 0 / var(--grunge-mask-floor)), rgb(0 0 0 / var(--grunge-mask-floor)));
+  mask-mode: alpha;
+  mask-repeat: repeat, no-repeat;
+  mask-size: var(--grunge-mask-size) var(--grunge-mask-size), 100% 100%;
+  mask-composite: add;
+}
+.grunge.grunge--clean .grunge-shell {
+  mask-image: none;
+}
+/* The alpha mask provides the main texture; avoid washing out contrast. */
+.grunge::before { opacity: calc(var(--grunge-wear-opacity) * .5); }
+.grunge::after { opacity: calc(var(--grunge-grain-opacity) * .35); }
+
+@media (prefers-contrast: more), (forced-colors: active), print {
+  .grunge .grunge-shell { mask-image: none; }
 }
