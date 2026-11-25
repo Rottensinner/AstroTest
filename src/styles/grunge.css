@@ -21,15 +21,58 @@
   background: radial-gradient(ellipse at 50% 0%, #291211, transparent 65%), var(--color-lcd);
 }
 
+/* Static, full-page distressed screen-print overlay.
+   Layers do not receive pointer events or alter layout. */
+.grunge {
+  --grunge-wear-opacity: .27;
+  --grunge-grain-opacity: .48;
+  --grunge-dust: url("%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22192%22%20height%3D%22192%22%3E%3Cfilter%20id%3D%22n%22%20color-interpolation-filters%3D%22sRGB%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.78%22%20numOctaves%3D%223%22%20seed%3D%2217%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%20.68%200%200%200%200%20.59%200%200%200%200%20.55%205%200%200%200%20-2.55%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url(%23n)%22%2F%3E%3C%2Fsvg%3E");
+  --grunge-ink-loss: url("%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22256%22%20height%3D%22256%22%3E%3Cfilter%20id%3D%22n%22%20color-interpolation-filters%3D%22sRGB%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.51%22%20numOctaves%3D%224%22%20seed%3D%229%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%20.025%200%200%200%200%20.018%200%200%200%200%20.018%205%200%200%200%20-2.35%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url(%23n)%22%2F%3E%3C%2Fsvg%3E");
+  --grunge-wear: url("%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22512%22%20height%3D%22512%22%3E%3Cfilter%20id%3D%22n%22%20color-interpolation-filters%3D%22sRGB%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.035%22%20numOctaves%3D%225%22%20seed%3D%2227%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%20.40%200%200%200%200%20.34%200%200%200%200%20.30%204%200%200%200%20-2.05%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url(%23n)%22%2F%3E%3C%2Fsvg%3E");
+}
+
+.grunge::before,
 .grunge::after {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: 5;
   pointer-events: none;
-  background-image: var(--grain);
-  opacity: .2;
-  mix-blend-mode: soft-light;
+  background-repeat: repeat;
+}
+
+/* Larger stains, paper fibres and faint scratches. */
+.grunge::before {
+  z-index: 5;
+  background-image:
+    var(--grunge-wear),
+    linear-gradient(73deg, transparent 18%, #aa827438 18.08%, transparent 18.22%),
+    linear-gradient(109deg, transparent 71%, #02010199 71.08%, transparent 71.28%);
+  background-size: 512px 512px, 730px 910px, 890px 1100px;
+  opacity: var(--grunge-wear-opacity);
+}
+
+/* Fine dust and irregular pigment loss, over the entire UI. */
+.grunge::after {
+  z-index: 6;
+  background-image: var(--grunge-ink-loss), var(--grunge-dust);
+  background-size: 256px 256px, 192px 192px;
+  opacity: var(--grunge-grain-opacity);
+}
+
+/* Optional intensity modifiers on <main class="grunge ...">. */
+.grunge.grunge--subtle {
+  --grunge-wear-opacity: .12;
+  --grunge-grain-opacity: .22;
+}
+
+.grunge.grunge--heavy {
+  --grunge-wear-opacity: .45;
+  --grunge-grain-opacity: .72;
+}
+
+.grunge.grunge--clean {
+  --grunge-wear-opacity: 0;
+  --grunge-grain-opacity: 0;
 }
 
 .grunge-defs {
@@ -286,7 +329,7 @@
 }
 
 @media (prefers-contrast: more) {
-  .grunge::after { display: none; }
+  .grunge::before, .grunge::after { display: none; }
   .grunge-frame::before, .grunge .retro-panel::before { filter: none; }
   .grunge { --grunge-border: #df776e; }
 }
@@ -296,4 +339,9 @@
     animation: none !important;
     transition: none !important;
   }
+}
+
+/* Keep overlays off high-contrast system themes and printed notes. */
+@media (forced-colors: active), print {
+  .grunge::before, .grunge::after { display: none; }
 }
