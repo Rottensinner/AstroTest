@@ -1,0 +1,165 @@
+---
+import '@fontsource/vt323/400.css';
+import '@fontsource/dseg14-classic/400.css';
+import '../styles/global.css';
+import '../styles/grunge.css';
+import Button from '../components/Button.astro';
+import Panel from '../components/Panel.astro';
+import Clock from '../components/Clock.astro';
+import Input from '../components/Input.astro';
+import Textarea from '../components/Textarea.astro';
+---
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0d0b0b" />
+  <title>MEMENTO — Grunge UI</title>
+</head>
+<body>
+  <main class="grunge">
+    <svg class="grunge-defs" width="0" height="0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="memento-edge" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
+          <feTurbulence type="fractalNoise" baseFrequency=".065" numOctaves="4" seed="13" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="7" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </defs>
+    </svg>
+    <div class="grunge-shell">
+      <nav class="grunge-nav" aria-label="Nawigacja">
+        <a href="/">← RETRO UI</a>
+        <span>STUDY SYSTEM / 001</span>
+        <a href="/game">DEEP SPACE →</a>
+      </nav>
+      <header class="grunge-masthead">
+        <p class="grunge-label">ARCHIVE OF THE LIVING / VOL. 01</p>
+        <h1>MEMENTO</h1>
+        <p class="grunge-strip grunge-frame">KNOWLEDGE RESISTS DECAY</p>
+      </header>
+      <section class="grunge-banner grunge-frame" aria-label="Motyw graficzny Memento">
+        <svg viewBox="0 0 720 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true" class="grunge-eye">
+          <defs>
+            <pattern id="memento-hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(24)">
+              <path d="M0 0V5" stroke="currentColor" stroke-width="1.6" />
+            </pattern>
+          </defs>
+          <g fill="none" stroke="currentColor">
+            <path d="M-15 90Q180-70 360 12Q540-70 735 90Q540 250 360 168Q180 250-15 90Z" opacity=".3" />
+            <path d="M25 90Q180-55 360 12Q540-55 695 90Q540 235 360 168Q180 235 25 90Z" stroke-width="2" opacity=".55" />
+            <path d="M80 90Q220-42 360 8Q500-42 640 90Q500 222 360 172Q220 222 80 90Z" fill="url(#memento-hatch)" stroke-width="2" />
+            <path d="M170 90Q360-72 550 90Q360 252 170 90Z" fill="#100b0b" stroke-width="3" />
+            <circle cx="360" cy="90" r="69" stroke-width="2" />
+            <circle cx="360" cy="90" r="57" stroke-dasharray="1 3" stroke-width="7" />
+            <circle cx="360" cy="90" r="46" stroke-width="1" />
+            <circle cx="360" cy="90" r="31" fill="url(#memento-hatch)" stroke-width="2" />
+            <circle cx="360" cy="90" r="16" fill="currentColor" />
+            <path d="M0 90H145M575 90H720M360 0V12M360 168V180" stroke-dasharray="5 4" />
+          </g>
+        </svg>
+        <span class="grunge-banner-tag">FIG. 01 / OBSERVE</span>
+      </section>
+      <p class="grunge-strip grunge-frame grunge-section-label">I. / DISCIPLINE IS A FORM OF MEMORY</p>
+      <div class="grunge-grid">
+        <div class="grunge-cell grunge-wide">
+          <Panel title="01 / Current session">
+            <span class="grunge-label">SUBJECT / 001</span>
+            <h3>Astro &amp; TypeScript</h3>
+            <p>Komponenty, routing i architektura interfejsu.</p>
+            <label for="memento-progress">PRZYKŁADOWY POSTĘP / 65%</label>
+            <progress class="retro-progress" id="memento-progress" value="65" max="100">65%</progress>
+            <a class="retro-button" href="https://docs.astro.build/en/basics/astro-components/">DOKUMENTACJA ASTRO →</a>
+          </Panel>
+        </div>
+        <div class="grunge-cell grunge-narrow">
+          <Panel title="02 / Focus timer">
+            <div class="grunge-display">
+              <span id="memento-timer" class="grunge-digits" role="timer">25:00</span>
+              <span id="memento-timer-status" role="status" class="grunge-label">READY</span>
+            </div>
+            <div class="grunge-controls">
+              <Button id="memento-start" variant="primary">START</Button>
+              <Button id="memento-reset">RESET</Button>
+            </div>
+          </Panel>
+        </div>
+        <div class="grunge-cell grunge-five">
+          <Panel title="03 / Notes">
+            <Input id="memento-note-title" label="Temat" placeholder="SUBJECT..." />
+            <Textarea id="memento-note" label="Notatka" placeholder="RECORD YOUR THOUGHTS..." rows={4} />
+            <p class="grunge-label">SZKIC / BEZ ZAPISU</p>
+          </Panel>
+        </div>
+        <div class="grunge-cell grunge-three">
+          <Panel title="04 / Time">
+            <Clock />
+            <span class="grunge-label">LOCAL TIME</span>
+            <span class="retro-badge">SYSTEM ONLINE</span>
+          </Panel>
+        </div>
+        <div class="grunge-cell grunge-four">
+          <Panel title="05 / Index">
+            <table class="retro-table">
+              <thead><tr><th>MODUŁ</th><th>STATUS</th></tr></thead>
+              <tbody><tr><td>ASTRO</td><td>01</td></tr><tr><td>CSS</td><td>02</td></tr><tr><td>TS</td><td>03</td></tr></tbody>
+            </table>
+          </Panel>
+        </div>
+      </div>
+      <footer class="grunge-footer">
+        <span>MEMENTO / V.01</span><span>REMEMBER EVERYTHING</span>
+      </footer>
+    </div>
+  </main>
+</body>
+</html>
+<script>
+  const display = document.querySelector<HTMLElement>('#memento-timer');
+  const status = document.querySelector<HTMLElement>('#memento-timer-status');
+  const start = document.querySelector<HTMLButtonElement>('#memento-start');
+  const reset = document.querySelector<HTMLButtonElement>('#memento-reset');
+  const duration = 25 * 60;
+  let remaining = duration;
+  let deadline = 0;
+  let interval: number | undefined;
+
+  function render() {
+    if (display) display.textContent = String(Math.floor(remaining / 60)).padStart(2, '0') + ':' + String(remaining % 60).padStart(2, '0');
+  }
+  function stop() {
+    if (interval !== undefined) window.clearInterval(interval);
+    interval = undefined;
+  }
+  function tick() {
+    remaining = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
+    render();
+    if (remaining === 0) {
+      stop();
+      if (start) start.textContent = 'START';
+      if (status) status.textContent = 'COMPLETE';
+    }
+  }
+  start?.addEventListener('click', () => {
+    if (interval !== undefined) {
+      tick();
+      stop();
+      start.textContent = 'START';
+      if (status && remaining > 0) status.textContent = 'PAUSED';
+      return;
+    }
+    if (!remaining) remaining = duration;
+    deadline = Date.now() + remaining * 1000;
+    start.textContent = 'PAUSE';
+    if (status) status.textContent = 'FOCUS';
+    tick();
+    interval = window.setInterval(tick, 250);
+  });
+  reset?.addEventListener('click', () => {
+    stop();
+    remaining = duration;
+    render();
+    if (start) start.textContent = 'START';
+    if (status) status.textContent = 'READY';
+  });
+</script>

@@ -1,0 +1,299 @@
+/* MEMENTO — isolated visual system for /grunge. */
+.grunge {
+  --color-lcd: #0d0b0b;
+  --color-surface: #19100f;
+  --color-ink: #d7bbb1;
+  --color-muted: #a78c83;
+  --color-accent: #df776e;
+  --color-danger: #f08b80;
+  --color-highlight: #492322;
+  --grunge-border: #9e403e;
+  --font-pixel: "VT323", monospace;
+  --font-body: ui-monospace, "Liberation Mono", monospace;
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  padding: clamp(1rem, 4vw, 3rem);
+  color-scheme: dark;
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background: radial-gradient(ellipse at 50% 0%, #291211, transparent 65%), var(--color-lcd);
+}
+
+.grunge::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background-image: var(--grain);
+  opacity: .2;
+  mix-blend-mode: soft-light;
+}
+
+.grunge-defs {
+  position: absolute;
+  pointer-events: none;
+}
+
+.grunge-shell {
+  max-width: 1100px;
+  margin-inline: auto;
+}
+
+.grunge-nav, .grunge-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: .6rem 1rem;
+  color: var(--color-muted);
+  font-size: .75rem;
+  letter-spacing: .1em;
+  border-block: 1px solid var(--grunge-border);
+  padding: .75rem .2rem;
+}
+
+.grunge-nav a, .grunge a:not(.retro-button) {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.grunge-masthead {
+  text-align: center;
+  padding-block: 1.5rem;
+}
+
+.grunge-label {
+  color: var(--color-muted);
+  font-size: .75rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  line-height: 1.6;
+}
+
+.grunge-masthead h1 {
+  margin: .2rem 0 .8rem;
+  color: var(--color-accent);
+  font-family: "VT323", monospace;
+  font-weight: 400;
+  font-size: clamp(3.6rem, 13vw, 9rem);
+  line-height: .85;
+  letter-spacing: .065em;
+  text-shadow: 2px 1px #622523;
+}
+
+.grunge-strip {
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  padding: .45rem 1rem;
+  color: var(--color-accent);
+  font-size: clamp(.8rem, 2vw, 1.15rem);
+  letter-spacing: .12em;
+  text-align: center;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.grunge-section-label {
+  margin-block: 1.4rem;
+}
+
+/* Distort the decorative border, never the content itself. */
+.grunge-frame, .grunge .retro-panel {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid #572827;
+  border-radius: 0;
+}
+
+.grunge-frame::before, .grunge .retro-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border: 3px solid var(--grunge-border);
+  filter: url("#memento-edge");
+}
+
+.grunge-banner {
+  position: relative;
+  background-color: #110b0b;
+  background-image: repeating-linear-gradient(0deg, transparent 0 2px, #91332d18 2px 3px);
+  color: #a83e3a;
+  padding: .5rem;
+}
+
+.grunge-eye {
+  display: block;
+  width: 100%;
+  height: clamp(120px, 25vw, 240px);
+  filter: contrast(1.25);
+}
+
+.grunge-banner-tag {
+  position: absolute;
+  bottom: .7rem;
+  right: .9rem;
+  padding: .2rem .4rem;
+  color: var(--color-accent);
+  background: var(--color-lcd);
+  font-size: .7rem;
+  letter-spacing: .1em;
+}
+
+.grunge-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: stretch;
+  margin-block: 1.5rem 2rem;
+}
+
+.grunge-cell { min-width: 0; }
+.grunge-wide { grid-column: span 8; }
+.grunge-narrow { grid-column: span 4; }
+.grunge-five { grid-column: span 5; }
+.grunge-three { grid-column: span 3; }
+.grunge-four { grid-column: span 4; }
+
+.grunge .retro-panel {
+  height: 100%;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  gap: 1rem;
+  background: linear-gradient(145deg, #211313, #140e0e);
+  box-shadow: 3px 3px #350f0e, inset 0 0 20px #0005;
+}
+
+.grunge .retro-panel h2 {
+  border-bottom: 1px solid var(--grunge-border);
+  padding-bottom: .6rem;
+  font: 400 1.4rem/1.1 "VT323", monospace;
+  color: var(--color-accent);
+  letter-spacing: .09em;
+}
+
+.grunge h3 {
+  color: var(--color-ink);
+  font: 400 clamp(1.4rem, 3vw, 2rem)/1.2 "VT323", monospace;
+}
+
+.grunge .retro-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  width: fit-content;
+  max-width: 100%;
+  padding: .5rem .8rem;
+  background: transparent;
+  color: var(--color-accent);
+  border: 1px solid var(--grunge-border);
+  box-shadow: 2px 2px #350f0e;
+  font: 400 1.2rem/1.1 "VT323", monospace;
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: .07em;
+}
+
+.grunge .retro-button[data-variant="primary"] {
+  color: var(--color-lcd);
+  background: var(--color-accent);
+}
+
+.grunge .retro-button:hover:not(:disabled) {
+  color: var(--color-lcd);
+  background: #ed9288;
+}
+
+.grunge :focus-visible {
+  outline: 2px solid #ed9288;
+  outline-offset: 4px;
+}
+
+.grunge .retro-input {
+  color: var(--color-ink);
+  background: var(--color-lcd);
+  border: 1px solid var(--grunge-border);
+  border-radius: 0;
+  box-shadow: inset 0 0 8px #0006;
+  font: inherit;
+  font-size: .9rem;
+}
+
+.grunge .retro-label {
+  color: var(--color-muted);
+  font: inherit;
+  font-size: .8rem;
+}
+
+.grunge .retro-progress {
+  height: 1rem;
+  border: 1px solid var(--grunge-border);
+  background: var(--color-lcd);
+}
+
+.grunge .retro-progress::-webkit-progress-bar { background: var(--color-lcd); }
+.grunge .retro-progress::-webkit-progress-value {
+  background: repeating-linear-gradient(90deg, var(--color-accent) 0 8px, var(--color-lcd) 8px 11px);
+}
+.grunge .retro-progress::-moz-progress-bar {
+  background: repeating-linear-gradient(90deg, var(--color-accent) 0 8px, var(--color-lcd) 8px 11px);
+}
+
+.grunge-display {
+  display: grid;
+  gap: .5rem;
+  text-align: center;
+  padding: 1.2rem .5rem;
+  border: 1px solid var(--grunge-border);
+  background: repeating-linear-gradient(0deg, #0003 0 1px, transparent 1px 4px), var(--color-lcd);
+}
+
+.grunge-digits, .grunge .retro-clock-display {
+  color: var(--color-accent);
+  font-family: "DSEG14 Classic", monospace;
+  font-size: clamp(1.4rem, 3.2vw, 2.4rem);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  line-height: 1.6;
+}
+
+.grunge .retro-clock-display { font-size: clamp(.9rem, 1.8vw, 1.35rem); }
+
+.grunge-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+}
+
+.grunge-controls > * { flex: 1; }
+.grunge .retro-badge { color: var(--color-accent); font-weight: 400; }
+.grunge .retro-table { font-size: .85rem; }
+.grunge .retro-table th { color: var(--color-accent); }
+.grunge .retro-table th, .grunge .retro-table td {
+  padding: .55rem .3rem;
+  border-bottom: 1px dashed var(--grunge-border);
+}
+
+@media (max-width: 800px) {
+  .grunge-grid > * { grid-column: 1 / -1; }
+  .grunge .retro-clock-display { font-size: 1.4rem; }
+}
+
+@media (prefers-contrast: more) {
+  .grunge::after { display: none; }
+  .grunge-frame::before, .grunge .retro-panel::before { filter: none; }
+  .grunge { --grunge-border: #df776e; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grunge *, .grunge *::before, .grunge *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
