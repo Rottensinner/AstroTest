@@ -1,0 +1,24 @@
+{
+  "pages": [
+    {
+      "title": "DASHBOARD",
+      "url": "/"
+    },
+    {
+      "title": "SUBJECTS",
+      "url": "/subjects"
+    },
+    {
+      "title": "LESSONS",
+      "url": "/lessons"
+    },
+    {
+      "title": "QUIZZES",
+      "url": "/quizzes"
+    },
+    {
+      "title": "SETTINGS",
+      "url": "/settings"
+    }
+  ]
+}

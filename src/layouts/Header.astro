@@ -1,0 +1,15 @@
+---
+const status=Astro.props.status;
+const site=Astro.props.title;
+---
+
+<body>
+    <header>
+        <h1>{site.title}</h1>
+        <div class="status">
+            <span class="status__label">Status:</span>
+            <span class="status__value">{status.value}</span>
+            <span class="status__timestamp">{status.timestamp}</span>
+        </div>
+    </header>
+    </body>

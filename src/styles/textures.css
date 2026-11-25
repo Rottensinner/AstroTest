@@ -1,0 +1,488 @@
+/* ==================================================
+   MEMENTO — TEXTURE ENGINE
+   ================================================== */
+
+:root {
+  /* Intensywność efektów */
+
+  --grain-opacity: 0.15;
+  --distress-opacity: 0.3;
+  --scanline-opacity: 0.12;
+  --halftone-opacity: 0.35;
+
+  /* Drobnoziarnisty szum */
+
+  --texture-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+  /* Większe nieregularności powierzchni */
+
+  --texture-rough: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='350' height='350'%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.045' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23r)'/%3E%3C/svg%3E");
+
+  /* Uszkodzenia i ubytki tuszu */
+
+  --texture-ink: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='i'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 .035 0 0 0 0 .035 0 0 0 0 .03 5 0 0 0 -2.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23i)'/%3E%3C/svg%3E");
+}
+
+/* ==================================================
+   GLOBAL GRAIN
+   ================================================== */
+
+/*
+   Dodaj klasę "theme-grunge" do body,
+   aby aktywować globalną teksturę.
+*/
+
+body.theme-grunge {
+  position: relative;
+  isolation: isolate;
+}
+
+body.theme-grunge::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  z-index: var(--z-texture);
+
+  pointer-events: none;
+
+  background-image: var(--texture-noise);
+  background-size: 180px 180px;
+  background-repeat: repeat;
+
+  opacity: var(--grain-opacity);
+  mix-blend-mode: soft-light;
+}
+
+/* ==================================================
+   WEATHERED BACKGROUND
+   ================================================== */
+
+.weathered-background {
+  background-color: var(--background);
+
+  background-image:
+    radial-gradient(ellipse at 20% 10%, #491a181f, transparent 50%),
+    radial-gradient(ellipse at 90% 80%, #79262712, transparent 45%),
+    var(--texture-ink);
+
+  background-size:
+    auto,
+    auto,
+    250px 250px;
+}
+
+/* ==================================================
+   LOCAL GRAIN
+   ================================================== */
+
+.texture-grain {
+  position: relative;
+  isolation: isolate;
+}
+
+.texture-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background-image: var(--texture-noise);
+  background-size: 150px 150px;
+
+  opacity: var(--grain-opacity);
+  mix-blend-mode: soft-light;
+}
+
+/* ==================================================
+   ROUGH SURFACE
+   ================================================== */
+
+.texture-rough {
+  position: relative;
+  isolation: isolate;
+}
+
+.texture-rough::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background-image: var(--texture-rough);
+  background-size: 350px 350px;
+
+  opacity: 0.2;
+  mix-blend-mode: soft-light;
+}
+
+/* ==================================================
+   DISTRESSED INK
+   ================================================== */
+
+.texture-distressed {
+  position: relative;
+  isolation: isolate;
+}
+
+.texture-distressed::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background-image: var(--texture-ink);
+  background-size: 250px 250px;
+
+  opacity: var(--distress-opacity);
+}
+
+/* ==================================================
+   SCRATCHES
+   ================================================== */
+
+.texture-scratched {
+  position: relative;
+  isolation: isolate;
+}
+
+.texture-scratched::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(
+      73deg,
+      transparent 18%,
+      #a138351c 18.15%,
+      transparent 18.3%
+    ),
+    linear-gradient(
+      108deg,
+      transparent 67%,
+      #00000080 67.15%,
+      transparent 67.4%
+    ),
+    linear-gradient(28deg, transparent 83%, #c4b5ae0d 83.2%, transparent 83.4%);
+
+  opacity: 0.7;
+}
+
+/* ==================================================
+   HALFTONE
+   ================================================== */
+
+/*
+   Raster przypominający druk gazetowy.
+*/
+
+.texture-halftone {
+  position: relative;
+  isolation: isolate;
+}
+
+.texture-halftone::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background-image: radial-gradient(circle, #0b0b0a 0.8px, transparent 1px);
+
+  background-size: 3px 3px;
+  opacity: var(--halftone-opacity);
+}
+
+/* ==================================================
+   CRT SCANLINES
+   ================================================== */
+
+/*
+   Używaj głównie na zegarach i terminalach,
+   a nie na całej stronie.
+*/
+
+.texture-scanlines {
+  position: relative;
+  isolation: isolate;
+}
+
+.texture-scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 2px,
+    #000000 2px,
+    #000000 3px
+  );
+
+  opacity: var(--scanline-opacity);
+}
+
+/* ==================================================
+   VIGNETTE
+   ================================================== */
+
+.texture-vignette {
+  position: relative;
+  isolation: isolate;
+}
+
+.texture-vignette::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background: radial-gradient(
+    ellipse at center,
+    transparent 30%,
+    #00000050 75%,
+    #000000b3 100%
+  );
+}
+
+/* ==================================================
+   WEATHERED BORDER
+   ================================================== */
+
+.border-weathered {
+  border: 2px solid transparent;
+
+  border-image: var(--texture-ink) 20 stretch;
+
+  outline: 1px solid var(--border-color);
+}
+
+/* ==================================================
+   SCREENPRINT ARTWORK
+   ================================================== */
+
+/*
+   Dowolne zdjęcie wewnątrz .artwork
+   zostanie przekształcone w czerwono-czarną
+   ilustrację o wysokim kontraście.
+*/
+
+.artwork {
+  --ink-color: #963330;
+  --art-contrast: 2.3;
+  --art-brightness: 0.9;
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  margin: 0;
+
+  background: var(--ink-color);
+  border: var(--border-thick);
+}
+
+.artwork img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  filter: grayscale(1) contrast(var(--art-contrast))
+    brightness(var(--art-brightness));
+
+  mix-blend-mode: multiply;
+}
+
+.artwork::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background-image:
+    var(--texture-ink), radial-gradient(circle, #0b0b0a 0.6px, transparent 1px);
+
+  background-size:
+    180px 180px,
+    3px 3px;
+
+  opacity: 0.6;
+}
+
+/* =========================
+   ARTWORK VARIANTS
+   ========================= */
+
+.artwork--wide {
+  aspect-ratio: 3 / 1;
+}
+
+.artwork--landscape {
+  aspect-ratio: 16 / 9;
+}
+
+.artwork--square {
+  aspect-ratio: 1;
+}
+
+.artwork--portrait {
+  aspect-ratio: 2 / 3;
+}
+
+.artwork--dark {
+  --ink-color: #541a1b;
+  --art-contrast: 2.8;
+}
+
+.artwork--bright {
+  --ink-color: #b54440;
+}
+
+.artwork--negative img {
+  filter: grayscale(1) invert(1) contrast(var(--art-contrast))
+    brightness(var(--art-brightness));
+}
+
+.artwork--soft {
+  --art-contrast: 1.5;
+}
+
+.artwork--harsh {
+  --art-contrast: 4;
+}
+
+/* ==================================================
+   DISTRESSED TEXT
+   ================================================== */
+
+/*
+   Stosuj na dużych nagłówkach dekoracyjnych.
+   Nie stosuj na długich tekstach.
+*/
+
+.text-distressed {
+  -webkit-mask-image: var(--texture-ink);
+  mask-image: var(--texture-ink);
+
+  -webkit-mask-size: 180px 180px;
+  mask-size: 180px 180px;
+}
+
+/* ==================================================
+   POSTER COMPOSITION
+   ================================================== */
+
+.poster {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+
+  padding: var(--space-5);
+
+  background-color: var(--background);
+  background-image: var(--texture-ink);
+
+  border: var(--border);
+}
+
+.poster-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  width: 100%;
+  gap: var(--space-3);
+}
+
+.poster-band {
+  width: 100%;
+}
+
+.poster-caption {
+  display: block;
+
+  width: fit-content;
+  max-width: 100%;
+  padding: var(--space-2) var(--space-4);
+
+  color: var(--accent);
+  border: var(--border);
+
+  font-family: var(--font-heading);
+  font-size: clamp(0.75rem, 2vw, 1.25rem);
+
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+}
+
+/* ==================================================
+   TEXTURE INTENSITY
+   ================================================== */
+
+.texture-subtle {
+  --grain-opacity: 0.07;
+  --distress-opacity: 0.12;
+  --scanline-opacity: 0.06;
+  --halftone-opacity: 0.15;
+}
+
+.texture-heavy {
+  --grain-opacity: 0.35;
+  --distress-opacity: 0.6;
+  --scanline-opacity: 0.25;
+  --halftone-opacity: 0.6;
+}
+
+.texture-disabled {
+  --grain-opacity: 0;
+  --distress-opacity: 0;
+  --scanline-opacity: 0;
+  --halftone-opacity: 0;
+}
+
+/* ==================================================
+   ACCESSIBILITY
+   ================================================== */
+
+@media (prefers-contrast: more) {
+  :root {
+    --grain-opacity: 0;
+    --distress-opacity: 0;
+    --scanline-opacity: 0;
+    --halftone-opacity: 0;
+
+    --text-primary: #f2e9e3;
+    --accent: #f08c83;
+    --border-color: #b54440;
+  }
+
+  .artwork::after,
+  .texture-scratched::after,
+  .texture-rough::after,
+  .texture-vignette::after {
+    display: none;
+  }
+
+  .text-distressed {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}

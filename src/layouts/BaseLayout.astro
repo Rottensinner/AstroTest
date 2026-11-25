@@ -1,0 +1,30 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+}
+
+const {
+  title = "MEMENTO — Learning System"
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <meta name="theme-color" content="#0b0b0a" />
+
+    <title>{title}</title>
+  </head>
+
+  <body class="theme-grunge weathered-background">
+    <slot />
+  </body>
+</html>
