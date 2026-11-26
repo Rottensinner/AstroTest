@@ -1,91 +1,82 @@
 ---
-const plate = '/zdjecia/przejscie-oko.webp';
+const plate = '/zdjecia/wolka-przed-switem.webp';
+const duration = 4800;
 ---
-<dialog class="interlude" aria-label="Przejście do prologu">
-  <div class="camera" aria-hidden="true">
-    <div class="shot wide"><img src={plate} alt="" fetchpriority="low" /></div>
-    <div class="shot branches"><img src={plate} alt="" fetchpriority="low" /></div>
-    <div class="shot village"><img src={plate} alt="" fetchpriority="low" /></div>
-    <div class="shot iris"><img src={plate} alt="" fetchpriority="low" /></div>
+<dialog class="interlude" aria-label="Przejście do prologu" data-duration={duration} style={`--duration: ${duration}ms; --plate: url("${plate}")`}>
+  <img class="film-stock" hidden src={plate} alt="" fetchpriority="low" />
+  <div class="reel" aria-hidden="true">
+    <div class="shot house"><div class="print"></div></div>
+    <div class="shot patrol"><div class="print"></div></div>
+    <div class="shot window"><div class="print"></div></div>
+    <div class="shot infected"><div class="print"></div></div>
   </div>
   <button class="skip-film" type="button" autofocus>Pomiń</button>
 </dialog>
 
 <style>
   .interlude {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    max-width: none;
-    max-height: none;
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
-    border: 0;
-    background: #141111;
-    color: var(--paper);
-    --duration: 2150ms;
+    position: fixed; inset: 0; width: 100%; height: 100%;
+    max-width: none; max-height: none; margin: 0; padding: 0;
+    overflow: hidden; border: 0; color: var(--accent); background: #100d0d;
   }
-  .interlude::backdrop { background: #141111; }
-  .interlude[open] { display: grid; place-items: center; }
-  .camera {
-    width: min(88vw, 125svh);
-    aspect-ratio: 1.5;
-    display: grid;
-    grid-template: 64fr 36fr / 2fr 3fr 1.65fr;
-    gap: clamp(4px, .7vmin, 10px);
-    transform-origin: 69% 19%;
+  .interlude::backdrop { background: #100d0d; }
+  .reel, .shot {
+    position: absolute; inset: 0; overflow: hidden;
   }
-  .shot {
-    isolation: isolate;
-    min-height: 0;
-    position: relative;
-    overflow: hidden;
-    background: #241716;
+
+  .shot { visibility: hidden; display: grid; grid-template: minmax(0,1fr) / minmax(0,1fr); place-items: center; }
+  .print {
+    transform-origin: var(--focus);
+    width: max(100%, 150dvh);
+    aspect-ratio: 3/2;
+    background-image: var(--plate);
+    background-position: var(--tile);
+    background-size: 200% 200%;
+    justify-self: center;
   }
-  .shot::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border: 3px solid var(--line);
-    border-image: var(--ink-frame);
-    border-image-width: 4px;
-    pointer-events: none;
+  .house {
+    --tile: 0% 0%; --at: 0ms; --span: 1450ms;
+    --focus: 61% 52%; --from: 1; --to: 1.28;
   }
-  .shot img { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .wide { grid-column: 1 / -1; }
-  .wide img { object-position: 64% 37%; }
-  .branches img { object-position: 0% 100%; transform-origin: 0% 100%; transform: scale(2.2); }
-  .village img { object-position: 50% 100%; transform-origin: 50% 100%; transform: scale(1.4); }
-  .iris img { object-position: 70% 36%; transform-origin: 68% 35%; transform: scale(2.35); }
-  .interlude[open] .camera { animation: frame-zoom var(--duration) both; }
-  .interlude[open] .village { animation: village-cut var(--duration) both; }
-  .interlude[open] .iris { animation: iris-cut var(--duration) both; }
-  @keyframes frame-zoom {
-    0% { opacity: 0; transform: scale(.80) translateY(6%); }
-    12% { opacity: 1; }
-    29% { transform: scale(.95); }
-    45% { transform: scale(1.03); animation-timing-function: cubic-bezier(.5,.02,.24,.98); }
-    79% { opacity: 1; transform: scale(3.6); }
-    100% { opacity: 0; transform: scale(5); }
+  .patrol {
+    --tile: 100% 0%; --at: 1450ms; --span: 1060ms;
+    --focus: 55% 40%; --from: 1.06; --to: 1.18;
   }
-  @keyframes village-cut { 0%, 12% { opacity: 0; } 24%, 100% { opacity: 1; } }
-  @keyframes iris-cut { 0%, 20% { opacity: 0; } 32%, 100% { opacity: 1; } }
+  .window {
+    --tile: 0% 100%; --at: 2510ms; --span: 1160ms;
+    --focus: 60% 56%; --from: 1; --to: 1.45;
+  }
+  .infected {
+    --tile: 100% 100%; --at: 3670ms; --span: calc(var(--duration) - var(--at));
+    --focus: 50% 38%; --from: 1.20; --to: 1.23;
+  }
+  .reel::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: url('/ziarno.png') repeat; opacity: .16; mix-blend-mode: soft-light;
+  }
+  .interlude[open] .reel { animation: finish-reel var(--duration) linear both; }
+  .interlude[open] .shot {
+    animation: expose var(--span) linear var(--at);
+  }
+  .interlude[open] .print { animation: punch var(--span) ease-out var(--at) both; }
+  @keyframes expose { from, to { visibility: visible; } }
+  @keyframes punch {
+    from { transform: scale(var(--from)); }
+    to { transform: scale(var(--to)); }
+  }
+  @keyframes finish-reel {
+    0% { opacity: .35; }
+    6%, 90% { opacity: 1; }
+    100% { opacity: 0; }
+  }
   .skip-film {
     position: absolute;
     bottom: max(1.25rem, env(safe-area-inset-bottom));
     right: max(1.25rem, env(safe-area-inset-right));
-    min-height: 44px;
-    padding: .5rem 1rem;
-    background: #201616;
-    color: var(--paper);
-    border: 2px solid var(--line);
-    border-image: var(--ink-frame);
+    min-height: 44px; padding: .5rem 1rem;
+    background: #201616; color: var(--paper);
+    border: 2px solid var(--line); border-image: var(--ink-frame);
     font: .875rem var(--mono);
-  }
-  @media (max-aspect-ratio: 3/4) {
-    .camera { width: 94vw; aspect-ratio: .9; transform-origin: 69% 20%; }
   }
   @media (prefers-reduced-motion: reduce) {
     .interlude[open] * { animation: none; }
@@ -96,8 +87,9 @@ const plate = '/zdjecia/przejscie-oko.webp';
   const start = document.querySelector<HTMLAnchorElement>('#start-reading');
   const dialog = document.querySelector<HTMLDialogElement>('.interlude');
   if (start && dialog && typeof dialog.showModal === 'function') {
+    const reelDuration = Number(dialog.dataset.duration);
     const motion = matchMedia('(prefers-reduced-motion: reduce)');
-    const art = dialog.querySelector('img')!;
+    const art = dialog.querySelector<HTMLImageElement>('.film-stock')!;
     let timer: number | undefined;
     let leaving = false;
     let preparing = false;
@@ -129,10 +121,10 @@ const plate = '/zdjecia/przejscie-oko.webp';
       }
       dialog.showModal();
       // Keep navigation available if the animation is interrupted.
-      timer = window.setTimeout(finish, 2500);
+      timer = window.setTimeout(finish, reelDuration + 450);
     });
     dialog.addEventListener('animationend', (event) => {
-      if (event.target === dialog.querySelector('.camera')) finish();
+      if (event.target === dialog.querySelector('.reel')) finish();
     });
     dialog.querySelector('button')!.addEventListener('click', finish);
     dialog.addEventListener('cancel', (event) => { event.preventDefault(); finish(); });
