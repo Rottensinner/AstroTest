@@ -1,0 +1,147 @@
+---
+const plate = '/zdjecia/przejscie-oko.webp';
+---
+<dialog class="interlude" aria-label="Przejście do prologu">
+  <div class="camera" aria-hidden="true">
+    <div class="shot wide"><img src={plate} alt="" fetchpriority="low" /></div>
+    <div class="shot branches"><img src={plate} alt="" fetchpriority="low" /></div>
+    <div class="shot village"><img src={plate} alt="" fetchpriority="low" /></div>
+    <div class="shot iris"><img src={plate} alt="" fetchpriority="low" /></div>
+  </div>
+  <button class="skip-film" type="button" autofocus>Pomiń</button>
+</dialog>
+
+<style>
+  .interlude {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    border: 0;
+    background: #141111;
+    color: var(--paper);
+    --duration: 2150ms;
+  }
+  .interlude::backdrop { background: #141111; }
+  .interlude[open] { display: grid; place-items: center; }
+  .camera {
+    width: min(88vw, 125svh);
+    aspect-ratio: 1.5;
+    display: grid;
+    grid-template: 64fr 36fr / 2fr 3fr 1.65fr;
+    gap: clamp(4px, .7vmin, 10px);
+    transform-origin: 69% 19%;
+  }
+  .shot {
+    isolation: isolate;
+    min-height: 0;
+    position: relative;
+    overflow: hidden;
+    background: #241716;
+  }
+  .shot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 3px solid var(--line);
+    border-image: var(--ink-frame);
+    border-image-width: 4px;
+    pointer-events: none;
+  }
+  .shot img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .wide { grid-column: 1 / -1; }
+  .wide img { object-position: 64% 37%; }
+  .branches img { object-position: 0% 100%; transform-origin: 0% 100%; transform: scale(2.2); }
+  .village img { object-position: 50% 100%; transform-origin: 50% 100%; transform: scale(1.4); }
+  .iris img { object-position: 70% 36%; transform-origin: 68% 35%; transform: scale(2.35); }
+  .interlude[open] .camera { animation: frame-zoom var(--duration) both; }
+  .interlude[open] .village { animation: village-cut var(--duration) both; }
+  .interlude[open] .iris { animation: iris-cut var(--duration) both; }
+  @keyframes frame-zoom {
+    0% { opacity: 0; transform: scale(.80) translateY(6%); }
+    12% { opacity: 1; }
+    29% { transform: scale(.95); }
+    45% { transform: scale(1.03); animation-timing-function: cubic-bezier(.5,.02,.24,.98); }
+    79% { opacity: 1; transform: scale(3.6); }
+    100% { opacity: 0; transform: scale(5); }
+  }
+  @keyframes village-cut { 0%, 12% { opacity: 0; } 24%, 100% { opacity: 1; } }
+  @keyframes iris-cut { 0%, 20% { opacity: 0; } 32%, 100% { opacity: 1; } }
+  .skip-film {
+    position: absolute;
+    bottom: max(1.25rem, env(safe-area-inset-bottom));
+    right: max(1.25rem, env(safe-area-inset-right));
+    min-height: 44px;
+    padding: .5rem 1rem;
+    background: #201616;
+    color: var(--paper);
+    border: 2px solid var(--line);
+    border-image: var(--ink-frame);
+    font: .875rem var(--mono);
+  }
+  @media (max-aspect-ratio: 3/4) {
+    .camera { width: 94vw; aspect-ratio: .9; transform-origin: 69% 20%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .interlude[open] * { animation: none; }
+  }
+</style>
+
+<script>
+  const start = document.querySelector<HTMLAnchorElement>('#start-reading');
+  const dialog = document.querySelector<HTMLDialogElement>('.interlude');
+  if (start && dialog && typeof dialog.showModal === 'function') {
+    const motion = matchMedia('(prefers-reduced-motion: reduce)');
+    const art = dialog.querySelector('img')!;
+    let timer: number | undefined;
+    let leaving = false;
+    let preparing = false;
+
+    function finish() {
+      if (!dialog?.open || leaving) return;
+      leaving = true;
+      clearTimeout(timer);
+      location.assign(start!.href);
+    }
+
+    start.addEventListener('click', async (event) => {
+      if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey ||
+          event.shiftKey || event.altKey || motion.matches) return;
+      event.preventDefault();
+      if (preparing || dialog.open) return;
+      preparing = true;
+      if (!art.complete || !art.naturalWidth) {
+        // On slow connections keep the cover visible, then go straight to the story.
+        await Promise.race([
+          art.decode().catch(() => {}),
+          new Promise<void>((resolve) => window.setTimeout(resolve, 550)),
+        ]);
+      }
+      if (!preparing) return;
+      if (!art.naturalWidth || motion.matches) {
+        location.assign(start.href);
+        return;
+      }
+      dialog.showModal();
+      // Keep navigation available if the animation is interrupted.
+      timer = window.setTimeout(finish, 2500);
+    });
+    dialog.addEventListener('animationend', (event) => {
+      if (event.target === dialog.querySelector('.camera')) finish();
+    });
+    dialog.querySelector('button')!.addEventListener('click', finish);
+    dialog.addEventListener('cancel', (event) => { event.preventDefault(); finish(); });
+    motion.addEventListener('change', (event) => { if (event.matches) finish(); });
+    window.addEventListener('pageshow', () => {
+      clearTimeout(timer);
+      leaving = false;
+      preparing = false;
+      if (dialog.open) dialog.close();
+    });
+  }
+</script>

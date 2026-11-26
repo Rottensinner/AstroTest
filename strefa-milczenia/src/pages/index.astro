@@ -1,5 +1,6 @@
 ---
 import Page from '../components/Page.astro';
+import CoverTransition from '../components/CoverTransition.astro';
 ---
 <Page title="GROM — Strefa milczenia">
   <main class="jacket">
@@ -9,13 +10,14 @@ import Page from '../components/Page.astro';
         <div class="imprint"><i aria-hidden="true"></i> GROM</div>
         <h1>Strefa<br/><span>milczenia</span></h1>
         <p>O 02:17 z Wólki Brzezińskiej przychodzi ostatnie zgłoszenie. Trzy godziny później nad wsią pojawia się śmigłowiec <span class="unit">GROM-u.</span></p>
-        <a class="read" href="/czytaj/">
+        <a id="start-reading" class="read" href="/czytaj/">
           <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C9 4.6 5.6 4.4 2.5 5.2v13.2c3.3-.8 6.8-.4 9.5 1.5 2.7-1.9 6.2-2.3 9.5-1.5V5.2c-3.1-.8-6.5-.6-9.5 1.3Zm0 0v13.4"/></svg>
           CZYTAJ
         </a>
       </div>
     </div>
   </main>
+  <CoverTransition />
   <script>
     // Follow chapter links saved before the cover and reader were separated.
     const readerAnchors = ['#prolog', '#rozkaz', '#wies', '#spis', '#fotografie'];
