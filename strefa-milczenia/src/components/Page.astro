@@ -1,0 +1,26 @@
+---
+import iconFile from '../assets/grom-icon.png?no-inline';
+import iconData from '../assets/grom-icon.png?inline';
+import GrungeFilters from './GrungeFilters.astro';
+import '../print.css';
+import '../style.css';
+interface Props { title: string }
+const { title } = Astro.props;
+---
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0d0b0b" />
+    <meta name="description" content="Strefa milczenia. Opowiadanie o ostatnim połączeniu z Wólki Brzezińskiej." />
+    <link rel="icon" type="image/png" sizes="32x32" href={iconFile} />
+    <link rel="icon" type="image/png" sizes="32x32" href={iconData} />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <title>{title}</title>
+  </head>
+  <body class="theme-grunge">
+    <GrungeFilters />
+    <slot />
+  </body>
+</html>

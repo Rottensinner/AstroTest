@@ -1,0 +1,167 @@
+@font-face {
+  font-family: 'Barlow Condensed';
+  src: url('/pismo/barlow.ttf') format('truetype');
+  font-weight: 800;
+  font-display: swap;
+}
+:root {
+  color-scheme: dark;
+  --background: #0d0b0b;
+  --paper: #dfcfc7;
+  --accent: #df776e;
+  --muted: #b59b91;
+  --line: #673633;
+  --mono: 'Courier New', monospace;
+  --display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --z-texture: 6;
+  --ink-frame: url('/druk/ramka.svg') 8 / 8px round;
+  --ink-rule: url('/druk/kreska.svg');
+  --border-thick: 2px solid #792627;
+}
+* {box-sizing: border-box}
+body {margin: 0; color: var(--paper); background: var(--background); font-family: Georgia, serif}
+a {color: inherit; text-underline-offset: .25em}
+a:hover {color: var(--accent)}
+:focus-visible {outline: 2px solid #f4a493; outline-offset: 4px}
+button {cursor: pointer}
+.jacket {
+  --gutter: clamp(.65rem, 2vw, 2rem);
+  --cover-paper: #1f1d1c;
+  position: relative;
+  isolation: isolate;
+  min-height: 100svh;
+  display: grid;
+  align-content: center;
+  padding: var(--gutter);
+  background: var(--cover-paper);
+  filter: saturate(1.2) hue-rotate(-5deg) brightness(1.04);
+}
+.jacket::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--texture-rough) repeat, var(--texture-noise) repeat;
+  background-blend-mode: multiply;
+  mix-blend-mode: soft-light;
+  opacity: .32;
+}
+.jacket-frame {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  container-type: inline-size;
+}
+.jacket-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  border: 4px solid var(--line);
+  border-image: var(--ink-frame);
+}
+.jacket-art, .jacket-content {grid-area: 1 / 1}
+.jacket-art {
+  display: block;
+  justify-self: end;
+  width: min(90%, calc((100svh - 2 * var(--gutter)) * 1.5));
+  height: auto;
+  object-fit: contain;
+  object-position: right center;
+  mask-image: linear-gradient(to right, transparent, black 15%);
+}
+.jacket-content {
+  position: relative;
+  width: 42%;
+  padding: clamp(1.5rem, 4cqw, 5rem) 0 clamp(1.5rem, 4cqw, 5rem) clamp(1.5rem, 3.6cqw, 4.5rem);
+}
+.imprint {display: flex; align-items: center; gap: .8rem; color: #e8c3b6; font: bold .98rem var(--mono); letter-spacing: .23em}
+.imprint i {width: 32px; height: 16px; background: repeating-linear-gradient(90deg, #d86e65 0 6px,transparent 6px 11px); transform: skewX(-15deg)}
+.jacket h1 {
+  width: fit-content; margin: clamp(1.7rem,4.5vh,3.2rem) 0 1.6rem;
+  color: #e5d7cb; text-transform: uppercase;
+  font: 800 clamp(3.5rem, 9.5cqw, 12rem)/.84 var(--display); letter-spacing: -.025em;
+  mask-image: linear-gradient(#000b,#000b),var(--texture-ink);
+  mask-size: auto, 180px 180px;
+}
+.jacket h1 span {color: #df776e}
+.jacket p {max-width: 35rem; text-wrap: pretty; color: #eee1d8; font-size: clamp(1.05rem,1.65vw,1.27rem); line-height: 1.55; margin: 0 0 2rem; text-shadow: 0 1px 5px #000}
+.unit {white-space: nowrap}
+.read {display: inline-flex; align-items: center; justify-content: center; gap: .8rem; padding: .85rem 1.65rem; color: #170e0e; background: var(--accent); text-decoration: none; font: bold .95rem var(--mono); letter-spacing: .12em; position: relative}
+.read::before {content: ''; position: absolute; inset: 0; border: 2px solid var(--line); border-image: var(--ink-frame); border-image-width: 4px; pointer-events: none}
+.read:hover {color: #170e0e; background: #ef978b}
+.reader-header {display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 1.1rem clamp(12px,3vw,3rem); border-bottom: 4px solid var(--line); border-image: var(--ink-frame); border-image-width: 0 0 8px; font: .85rem var(--mono); color: var(--muted)}
+.reader-header a {justify-self: start}
+.reader-header span {text-align: center; font: 800 1.6rem var(--display); text-transform: uppercase; color: var(--accent)}
+.reader {display: grid; grid-template-columns: 20% 60% 20%; align-items: start}
+.rail {position: sticky; top: 1.1rem; margin-top: 1.2rem; z-index: 3; width: min(16rem, calc(100% - 3rem)); transition: transform 220ms ease}
+.closed .rail {transform: translateX(-100%)}
+.panel {padding: clamp(.75rem, 1.5vw, 1.5rem); background: #191110; border: 3px solid var(--line); border-image: var(--ink-frame); transition: opacity 180ms ease}
+.closed .panel {opacity: 0}
+.panel h2 {font: 800 1.7rem var(--display); margin: 0 0 1rem; text-transform: uppercase; color: var(--accent)}
+.panel nav a {display: block; text-decoration: none; background: var(--ink-rule) left top / 156px 3px repeat-x; padding: .8rem 0}
+.panel small, .dateline, figcaption {display: block; font: .8rem/1.5 var(--mono); color: var(--muted); letter-spacing: .055em; text-transform: uppercase}
+.panel strong {font: normal 1.08rem/1.5 Georgia,serif}
+#toggle {position: absolute; left: 100%; top: .4rem; width: 42px; height: 46px; color: var(--accent); background: #221514; border: 2px solid var(--line); border-image: var(--ink-frame); border-image-width: 4px}
+#toggle svg {transition: transform 220ms ease; vertical-align: middle}
+.closed #toggle svg {transform: rotate(180deg)}
+#lektura {grid-column: 2; padding-block: clamp(2.5rem,6vw,6rem) 4rem; min-width: 0}
+.scene {position: relative; scroll-margin-top: 1.5rem; margin-bottom: 3rem; padding-block: 1.65rem}
+.scene::before {content: ''; pointer-events: none; position: absolute; inset: 0 clamp(-1.55rem,-1.4vw,-.5rem); border: 3px solid var(--line); border-image: var(--ink-frame)}
+.scene h1 {padding-bottom: 1rem; background: var(--ink-rule) left bottom / 156px 3px repeat-x}
+.scene-title {
+  display: block;
+  padding-block: .1em;
+  margin-block: -.1em;
+  filter: url('#ink-letter-edge');
+  mask-image: linear-gradient(#0009, #0009), var(--texture-ink);
+  mask-size: auto, 140px 140px;
+}
+.scene:focus {outline: none}
+.scene h1, footer h2 {font: 800 clamp(2.5rem,5vw,4.8rem)/.98 var(--display); text-transform: uppercase; color: var(--accent); margin: .45rem 0 2rem}
+.scene p {font: 1.18rem/1.75 Georgia, serif; margin: 0 0 1rem}
+.scene p.dateline {font: .83rem var(--mono); margin-bottom: .8rem}
+.scene p > strong:only-child {display: block;color: var(--accent); border-left: 3px solid; border-image: var(--ink-frame); border-image-width: 0 0 0 6px; padding-left: 1rem; font: bold 1rem/1.5 var(--mono)}
+figure {margin: 2rem 0}
+figure .artwork {border-image: var(--ink-frame); aspect-ratio: 16/9; --art-contrast: 1.65; --ink-color: #b96c64}
+figcaption {padding-block: .55rem}
+.reader-header a, .back, footer a, .skip {
+  text-decoration: none;
+  padding-bottom: 3px;
+  background: var(--ink-rule) left bottom / 156px 3px repeat-x;
+  box-decoration-break: clone;
+}
+.chapter-pagination {display: flex; justify-content: flex-end}
+.panel a[aria-current="page"] strong {color: var(--accent)}
+.back {font: .9rem var(--mono)}
+footer {padding: 2rem clamp(1rem,6vw,6rem); background: var(--ink-rule) left top / 156px 3px repeat-x; color: var(--muted); line-height: 1.6}
+footer h2 {font-size: 2.1rem; margin: 0}
+footer p {max-width: 64ch}
+footer ul {padding: 0; list-style: none}
+.skip {position: fixed; left: -999px}
+.skip:focus {left: 8px; top: 4px; padding: .6rem; background: #211311; z-index: 7}
+@media (max-width: 760px) {
+  .jacket-frame {align-items: start}
+  .jacket-art, .jacket-content {grid-area: auto}
+  .jacket-art {width: 100%; mask-image: none}
+  .jacket-content {width: 100%; padding: clamp(1.25rem, 5cqw, 2.3rem)}
+  .jacket h1 {font-size: clamp(3rem, 17cqw, 6.6rem); margin: 1.1rem 0}
+  .jacket p {margin-bottom: 1.2rem}
+  .reader {display: block}
+  .rail {position: fixed; width: min(16rem,calc(100vw - 3.5rem)); top: 4.6rem; left: 0; margin: 0}
+  #lektura {padding: 2.8rem 1.1rem 3rem max(3.25rem,7vw)}
+  .reader-header span {font-size: 1.2rem}
+  .scene p {font-size: 1.06rem}
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {transition: none !important}
+}
+@media (prefers-contrast: more) {
+  .scene-title {filter: none; mask-image: none}
+  .jacket h1,.jacket-art {mask-image: none}
+  .jacket-content {background: #100c0bf2}
+  .theme-grunge::after,.artwork::after {display: none}
+}

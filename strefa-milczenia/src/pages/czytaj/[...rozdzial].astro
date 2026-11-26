@@ -1,0 +1,95 @@
+---
+import { getCollection, render } from 'astro:content';
+import Page from '../../components/Page.astro';
+
+export async function getStaticPaths() {
+  const entries = (await getCollection('rozdzialy'))
+    .sort((a, b) => a.data.kolejnosc - b.data.kolejnosc || a.id.localeCompare(b.id, 'pl'));
+  const chapters = entries.map((entry, index) => ({
+    id: entry.id,
+    part: entry.data.czesc,
+    name: entry.data.tytul,
+    href: index === 0 ? '/czytaj/' : `/czytaj/${entry.id}/`,
+  }));
+  return entries.map((entry, index) => ({
+    params: { rozdzial: index === 0 ? undefined : entry.id },
+    props: { entry, chapters, index },
+  }));
+}
+
+const { entry, chapters, index } = Astro.props;
+const { Content } = await render(entry);
+const chapter = chapters[index];
+const next = chapters[index + 1];
+const photos = [
+  {place:'Marcinkowo',file:'Marcinkowo,_bus_stop.jpg',author:'Андрей Романенко',sa:true},
+  {place:'Ptkanów',file:'Kościół_w_Ptkanowie_pod_Opatowem_we_mgle,_20241226_0949_2911.jpg',author:'Jakub Hałun',sa:false},
+];
+---
+<Page title={chapter.name + " · GROM — Strefa milczenia"}>
+<a class="skip" href="#lektura">Przejdź do tekstu</a>
+<header class="reader-header"><a href="/">Okładka</a><span>Strefa milczenia</span></header>
+<div class="reader" id="reader">
+  <aside class="rail" aria-label="Nawigacja czytnika">
+    <div class="panel" id="spis">
+      <h2>Spis treści</h2>
+      <nav aria-label="Sceny opowiadania">{chapters.map(ch =>
+        <a href={ch.href} data-chapter={ch.id} aria-current={ch.id === chapter.id ? 'page' : undefined}><small>{ch.part}</small><strong>{ch.name}</strong></a>
+      )}</nav>
+    </div>
+    <button type="button" id="toggle" aria-controls="spis" aria-expanded="true" aria-label="Zwiń spis treści" title="Zwiń spis treści" hidden>
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 12H4m7-7-7 7 7 7"/></svg>
+    </button>
+  </aside>
+  <main id="lektura"><article aria-label="Strefa milczenia">
+    <section id={chapter.id} class="scene" tabindex="-1">
+      {(entry.data.godzina || entry.data.data) && <p class="dateline">
+        {entry.data.godzina && <time>{entry.data.godzina}</time>}
+        {entry.data.godzina && entry.data.data && ' · '}{entry.data.data}
+      </p>}
+      <h1><span class="scene-title">{chapter.part}: {chapter.name}</span></h1>
+      <Content />
+    </section>
+    <nav class="chapter-pagination" aria-label="Dalsza lektura">
+      {next ? <a href={next.href} rel="next" class="read">Dalej <span aria-hidden="true">→</span></a>
+        : <a class="back" href="/">Wróć do okładki</a>}
+    </nav>
+  </article></main>
+</div>
+<footer id="fotografie"><div><h2>Fotografie</h2><p>Wólka Brzezińska i opisana operacja są fikcyjne. Zdjęcia rzeczywistych miejsc zostały wykadrowane i stonowane kolorystycznie na potrzeby opowiadania.</p></div><ul>{photos.map(p=><li><a href={'https://commons.wikimedia.org/wiki/File:'+p.file}>{p.place}</a> · {p.author} · <a href={'https://creativecommons.org/licenses/'+(p.sa?'by-sa':'by')+'/4.0/'}>CC {p.sa?'BY-SA':'BY'} 4.0</a></li>)}</ul></footer>
+
+<script>
+  const reader = document.querySelector<HTMLElement>('#reader')!;
+  const panel = document.querySelector<HTMLElement>('#spis')!;
+  const toggle = document.querySelector<HTMLButtonElement>('#toggle')!;
+  const narrow = window.matchMedia('(max-width: 760px)');
+  function setOpen(open: boolean) {
+    reader.classList.toggle('closed', !open);
+    panel.inert = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+    const label = open ? 'Zwiń spis treści' : 'Rozwiń spis treści';
+    toggle.setAttribute('aria-label', label);
+    toggle.title = label;
+  }
+  toggle.hidden = false;
+  setOpen(!narrow.matches);
+  narrow.addEventListener('change', () => setOpen(!narrow.matches));
+  toggle.addEventListener('click', () => setOpen(panel.inert));
+  // Keep chapter bookmarks from the original single-page reader working.
+  function followChapterBookmark() {
+    const id = location.hash.slice(1);
+    if (!id || document.getElementById(id)) return;
+    const destination = Array.from(panel.querySelectorAll<HTMLAnchorElement>('a[data-chapter]'))
+      .find(link => link.dataset.chapter === id);
+    if (destination) location.replace(destination.href);
+  }
+  followChapterBookmark();
+  window.addEventListener('hashchange', followChapterBookmark);
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !panel.inert) {
+      setOpen(false);
+      toggle.focus();
+    }
+  });
+</script>
+</Page>
