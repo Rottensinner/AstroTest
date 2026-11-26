@@ -1,6 +1,5 @@
 ---
 import Page from '../components/Page.astro';
-import CoverTransition from '../components/CoverTransition.astro';
 ---
 <Page title="GROM — Strefa milczenia">
   <main class="jacket">
@@ -17,10 +16,29 @@ import CoverTransition from '../components/CoverTransition.astro';
       </div>
     </div>
   </main>
-  <CoverTransition />
   <script>
     // Follow chapter links saved before the cover and reader were separated.
     const readerAnchors = ['#prolog', '#rozkaz', '#wies', '#spis', '#fotografie'];
     if (readerAnchors.includes(location.hash)) location.replace('/czytaj/' + location.hash);
+
+    const start = document.querySelector<HTMLAnchorElement>('#start-reading');
+    const cover = document.querySelector<HTMLElement>('.jacket');
+    if (start && cover && typeof cover.animate === 'function') {
+      let fade: Animation | undefined;
+      start.addEventListener('click', (event) => {
+        if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey ||
+            event.shiftKey || event.altKey || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        event.preventDefault();
+        if (fade) return;
+        fade = cover.animate([{ opacity: 1 }, { opacity: 0 }], {
+          duration: 180, easing: 'ease-out', fill: 'forwards',
+        });
+        fade.onfinish = () => location.assign(start.href);
+      });
+      window.addEventListener('pageshow', () => {
+        fade?.cancel();
+        fade = undefined;
+      });
+    }
   </script>
 </Page>
