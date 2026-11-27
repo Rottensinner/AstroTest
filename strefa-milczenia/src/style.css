@@ -104,6 +104,14 @@ button {cursor: pointer}
 .banner-fold[open] summary {position: absolute; right: .75rem; bottom: .75rem; margin: 0}
 .banner-fold[open] summary svg {transform: rotate(180deg)}
 .banner-fold[open] .when-closed, .banner-fold:not([open]) .when-open {display: none}
+.banner-fold:not([open]) summary {
+  position: absolute; z-index: 2; top: 0; right: .75rem; margin: 0;
+}
+.banner-fold:not([open]) + .reader .rail {top: 0; margin-block-start: 0}
+.banner-fold:not([open]) + .reader #toggle {top: 0}
+.banner-fold:not([open]) + .reader #lektura {padding-block-start: 0}
+.banner-fold:not([open]) + .reader .scene {padding-block-start: 0}
+.banner-fold:not([open]) + .reader .dateline {min-height: 44px; align-content: center}
 .reader-banner {display: block; width: 100%; height: auto}
 .reader {display: grid; grid-template-columns: 20% 60% 20%; align-items: start}
 .rail {position: sticky; top: 1.1rem; margin-top: 1.2rem; z-index: 3; width: min(16rem, calc(100% - 3rem)); transition: transform 220ms ease}
@@ -163,7 +171,13 @@ footer ul {padding: 0; list-style: none}
   .rail {position: fixed; width: min(16rem,calc(100vw - 3.5rem)); top: 1rem; left: 0; margin: 0}
   .banner-fold + .reader .rail {position: sticky; height: 0; margin-top: 0}
   #lektura {padding: 2.8rem 1.1rem 3rem max(3.25rem,7vw)}
+  .banner-fold:not([open]) summary {right: 1.5rem}
+  .banner-fold:not([open]) + .reader .dateline {padding-inline-end: 10rem}
   .scene p {font-size: 1.06rem}
+}
+@media (max-width: 360px) {
+  .banner-fold:not([open]) summary {right: .75rem; padding-inline: .45rem; gap: .3rem; font-size: .8rem}
+  .banner-fold:not([open]) + .reader .dateline {padding-inline-end: 8rem; font-size: .76rem}
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {transition: none !important}
